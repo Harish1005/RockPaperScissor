@@ -3,7 +3,7 @@ A fun and interactive Rock Paper Scissors game built using HTML, CSS, and JavaSc
 
 ## 🔗 Live Demo
 👉 Play the Game
-Replace with your actual GitHub Pages, Netlify, or Vercel link.
+https://harish1005.github.io/RockPaperScissor/
 
 ## 🛠️ Tech Stack
 ✅ HTML5 – Structure of the game
@@ -28,12 +28,14 @@ Replace with your actual GitHub Pages, Netlify, or Vercel link.
 
 ## 📸 Screenshot
 Example:
+![Uploading Screenshot 2025-07-16 112154.png…]()
+
 
 
 ## 📖 How to Use
 Clone this repository
 
-git clone https://github.com/Harish1005/rock-paper-scissors.git
+git clone https://harish1005.github.io/RockPaperScissor/
 
 Open index.html in your browser
 
