@@ -28,8 +28,7 @@ https://harish1005.github.io/RockPaperScissor/
 
 ## 📸 Screenshot
 Example:
-
-
+<img width="1914" height="848" alt="Screenshot 2025-07-16 112154" src="https://github.com/user-attachments/assets/0515f4fe-a4b9-46a7-830a-989e7c4317a9" />
 
 
 ## 📖 How to Use
