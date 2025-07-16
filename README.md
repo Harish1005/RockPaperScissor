@@ -28,7 +28,7 @@ https://harish1005.github.io/RockPaperScissor/
 
 ## 📸 Screenshot
 Example:
-![Uploading Screenshot 2025-07-16 112154.png…]()
+
 
 
 
