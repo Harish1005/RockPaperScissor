@@ -34,7 +34,7 @@ Example:
 ## 📖 How to Use
 Clone this repository
 
-git clone https://harish1005.github.io/RockPaperScissor/
+git clone https://github.com/Harish1005/RockPaperScissor
 
 Open index.html in your browser
 
