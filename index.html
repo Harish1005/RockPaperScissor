@@ -10,15 +10,15 @@
 <body>
   <div class="main-div">
     <p class="game-title">Rock Paper Scissors</p>
-    <button onclick="playGame('Rock')" class="move-btn">
+    <button class="move-btn js-rock-btn">
       <img class="move-icon" src="images/rock-emoji.png" alt="Rock">
     </button>
     
-    <button onclick="playGame('Paper')" class="move-btn">
+    <button class="move-btn js-paper-btn">
       <img class="move-icon" src="images/paper-emoji.png" alt="Paper">
     </button>
 
-    <button onclick="playGame('Scissors')" class="move-btn">
+    <button class="move-btn js-scissors-btn">
       <img class="move-icon" src="images/scissors-emoji.png" alt="Scissor">
     </button>
 
@@ -28,9 +28,13 @@
     </p>
     <p class="js-score score"></p>
 
-    <button onclick=" resetScore()" class="reset-btn">
+    <div class="btn-div">
+      <button class="reset-btn btn">
       Reset Score</button>
-    
+      <button class="auto-play btn">Auto Play</button>
+    </div>
+
+    <div class="dialog-box"></div>
   </div>
   <script src="rps-final.js"></script>
 </body>
