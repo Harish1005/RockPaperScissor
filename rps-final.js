@@ -1,111 +1,129 @@
+// Load score or set default
 let score = JSON.parse(localStorage.getItem('score')) || {
-  Wins : 0,
-  Losses : 0,
-  Ties : 0
+  Wins: 0,
+  Losses: 0,
+  Ties: 0
 };
 
 updateScoreElement();
 
+let isAutoplaying = false;
+let intervalId;
 
-function resetScore (){
-  score ={
-    Wins : 0,
-    Losses : 0,
-    Ties : 0
-  };
+// Event: Manual Buttons
+document.querySelector('.js-rock-btn').addEventListener('click', () => playGame('Rock'));
+document.querySelector('.js-paper-btn').addEventListener('click', () => playGame('Paper'));
+document.querySelector('.js-scissors-btn').addEventListener('click', () => playGame('Scissors'));
+
+// Event: Keyboard Shortcuts
+document.body.addEventListener('keydown', (event) => {
+  if (event.key === 'r') playGame('Rock');
+  else if (event.key === 'p') playGame('Paper');
+  else if (event.key === 's') playGame('Scissors');
+  else if (event.key === 'a') autoPlay();
+  else if (event.key === 'Backspace') showDialogBox();
+});
+
+// Event: Reset Button
+document.querySelector('.reset-btn').addEventListener('click', () => {
+  showDialogBox();
+  stopAutoPlay(); // Stop autoplay if running
+});
+
+// Event: Auto Play Button
+document.querySelector('.auto-play').addEventListener('click', () => autoPlay());
+
+function playGame(playerMove) {
+  const computerMove = pickComputerMove();
+  let result = '';
+
+  if (playerMove === computerMove) {
+    result = 'Tie.';
+  } else if (
+    (playerMove === 'Rock' && computerMove === 'Scissors') ||
+    (playerMove === 'Paper' && computerMove === 'Rock') ||
+    (playerMove === 'Scissors' && computerMove === 'Paper')
+  ) {
+    result = 'You Win.';
+  } else {
+    result = 'You Lose.';
+  }
+
+  // Update score
+  if (result === 'You Win.') score.Wins++;
+  else if (result === 'You Lose.') score.Losses++;
+  else score.Ties++;
+
+  localStorage.setItem('score', JSON.stringify(score));
+  updateScoreElement();
+
+  // Show result
+  document.querySelector('.js-result').textContent = result;
+  document.querySelector('.js-moves').innerHTML = `
+    You 
+    <img src="images/${playerMove}-emoji.png" class="move-icon" alt="${playerMove}">
+    <img src="images/${computerMove}-emoji.png" class="move-icon" alt="${computerMove}">
+    Computer
+  `;
+}
+
+function updateScoreElement() {
+  document.querySelector('.js-score').textContent = 
+    `Wins : ${score.Wins}, Losses : ${score.Losses}, Ties : ${score.Ties}`;
+}
+
+function pickComputerMove() {
+  const moves = ['Rock', 'Paper', 'Scissors'];
+  const randomIndex = Math.floor(Math.random() * moves.length);
+  return moves[randomIndex];
+}
+
+function autoPlay() {
+  if (!isAutoplaying) {
+    intervalId = setInterval(() => {
+      const playerMove = pickComputerMove();
+      playGame(playerMove);
+    }, 1000);
+    isAutoplaying = true;
+    document.querySelector('.auto-play').textContent = 'Stop Playing';
+  } else {
+    stopAutoPlay();
+  }
+}
+
+function stopAutoPlay() {
+  clearInterval(intervalId);
+  isAutoplaying = false;
+  document.querySelector('.auto-play').textContent = 'Auto Play';
+}
+
+function resetScore() {
+  score = { Wins: 0, Losses: 0, Ties: 0 };
   localStorage.removeItem('score');
   updateScoreElement();
 }
 
-function playGame(playerMove){
-  const computerMove = pickComputerMove();
+function showDialogBox() {
+  const dialogBox = document.querySelector('.dialog-box');
+  dialogBox.innerHTML = `
+    <p class="js-reset-confirm">Are you sure? You want to reset score?</p>
+    <div class="reset-btn-div">
+      <button class="yes-btn reset-confirm-btn">Yes</button>
+      <button class="no-btn reset-confirm-btn">No</button>
+    </div>`;
 
-  let result = '';
+  document.querySelector('.yes-btn').addEventListener('click', () => {
+    resetScore();
+    hideDialogBox();
+    stopAutoPlay();
+  });
 
-  if (playerMove === 'Scissors') {
-
-    if (computerMove === 'Rock'){
-      result = 'You Lose.';
-    }
-    else if (computerMove === 'Paper'){
-      result = 'You Win.';
-    }
-    else if (computerMove === 'Scissors'){
-      result = 'Tie.';
-    }
-
-  } 
-  else if (playerMove === 'Paper'){
-
-    if (computerMove === 'Rock'){
-      result = 'You Win.';
-    }
-    else if (computerMove === 'Paper'){
-      result = 'Tie.';
-    }
-    else if (computerMove === 'Scissors'){
-      result = 'You Lose.';
-    }
-
-  } 
-  else if(playerMove === 'Rock'){
-
-    if (computerMove === 'Rock'){
-      result = 'Tie.';
-    }
-    else if (computerMove === 'Paper'){
-      result = 'You Lose.';
-    }
-    else if (computerMove === 'Scissors'){
-      result = 'You Win.';
-    }
-    
-  }
-
-  if (result === 'You Win.') {
-    score.Wins += 1; 
-  } else if (result === 'You Lose.') {
-    score.Losses += 1;
-  } else if (result === 'Tie.'){
-    score.Ties += 1;
-  }
-
-  localStorage.setItem('score', JSON.stringify(score));
-
-  updateScoreElement();
-
-  document.querySelector('.js-result').innerHTML = result;
-
-  document.querySelector('.js-moves').innerHTML = 
-  `You 
-  <img src="images/${playerMove}-emoji.png" class="move-icon" alt = ${playerMove}>  
-  <img src="images/${computerMove}-emoji.png" class="move-icon" alt = ${computerMove}>
-  Computer`;
-
-
+  document.querySelector('.no-btn').addEventListener('click', () => {
+    hideDialogBox();
+    stopAutoPlay();
+  });
 }
 
-function updateScoreElement() {
-  document.querySelector('.js-score')
-  .innerHTML = `Wins : ${score.Wins}, Losses : ${score.Losses}, Ties : ${score.Ties}`;
+function hideDialogBox() {
+  document.querySelector('.dialog-box').innerHTML = '';
 }
-
-function pickComputerMove(){
-  const randomNumber = Math.random();
-  
-  let computerMove = '';
-
-  if (randomNumber >= 0 && randomNumber < 1/3) {
-    computerMove = 'Rock';
-  } 
-  else if(randomNumber >= 1/3 && randomNumber < 2/3) {
-    computerMove = 'Paper';
-  } 
-  else if (randomNumber >= 2/3 && randomNumber <1) {
-    computerMove = 'Scissors';
-  }
-
-
-  return computerMove;
-}
-
